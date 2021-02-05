@@ -402,6 +402,18 @@ func (captcha *CaptchaImage) DrawText(text string) *CaptchaImage {
 
 }
 
+// 图片转io
+func (captcha *CaptchaImage) Img() (io io.Reader) {
+	buf := new(bytes.Buffer)
+	err := jpeg.Encode(buf, captcha.nrgba, nil)
+	if err != nil {
+		return
+	}
+	io = bytes.NewReader(buf.Bytes())
+
+	return
+}
+
 //获取所及字体.
 func RandFontFamily() (*truetype.Font, error) {
 	fontFile := fontFamily[r.Intn(len(fontFamily))]
